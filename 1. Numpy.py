@@ -1,19 +1,39 @@
-# Install NumPy
-# Type "pip install numpy" in Terminal or Command Prompt
+"""_____________________________________________________________________________________________<INSTALLATION & BASICS>____________________________________________"""
 
-# Import convention
+# What is NumPy?
+# NumPy provides the ndarray (N-dimensional array) object and many optimized
+# mathematical operations that work efficiently on whole arrays at once (vectorization).
+# This avoids slow Python loops and makes numerical code much faster and more concise. [web:15]
+
+# How it helps:
+# - Efficient storage and operations on large numeric datasets
+# - Convenient math (linear algebra, statistics, random numbers)
+# - Foundation for libraries like pandas, SciPy, scikit-learn, etc. [web:15]
+
+# Installation (run this in terminal, not inside Python):
+# pip install numpy
+
+# Standard import convention
 import numpy as np
-print("NumPy version:", np.__version__)                   # Print NumPy version (optional)
-"""__________________________________________________________________________________________________________________________________________"""
+print("NumPy version:", np.__version__)  # Optional: check installed version
 
-# Creating an Array from Python list
+"""____________________________________________<ARRAY CREATION & BASIC ATTRIBUTES>____________________________________________"""
+
+# Creating an Array from Python list (1D array / vector)
 arr1 = np.array([1, 2, 3, 4, 5])
 print("1D Array:", arr1)
 """
 [1 2 3 4 5]
 """
 
-# 2D array from nested lists
+# Show shape and ndim for the 1D array
+print("Shape of arr1:", arr1.shape)
+""" (5,) """
+
+print("Dimensions (ndim) of arr1:", arr1.ndim)
+""" 1 """
+
+# 2D array from nested lists (matrix)
 arr2 = np.array([[1, 2, 3], [4, 5, 6]])
 print("\n2D Array:\n", arr2)
 """
@@ -21,17 +41,18 @@ print("\n2D Array:\n", arr2)
  [4 5 6]]
 """
 
-# 3D array
+# 3D array (tensor): two 2x2 matrices stacked
 arr3 = np.array([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
 print("\n3D Array:\n", arr3)
 """
 [[[1 2] 
-[3 4]]
-    [[5 6]
-    [7 8]]]
+ [3 4]]
+
+[[5 6]
+ [7 8]]]
 """
 
-print("\n3D Array shape:", arr3.shape)
+print("\n3D Array shape:", arr3.shape)  # (depth, rows, cols)
 """
 (2, 2, 2)
 """
@@ -41,6 +62,7 @@ print("\nDimensions of arr3:", arr3.ndim)
 3
 """
 
+# Reshaping arrays (same total number of elements, different shape)
 arr4 = np.reshape(arr3, (2, 4))
 print("\nReshaped Array (2x4):\n", arr4)
 """
@@ -48,47 +70,17 @@ print("\nReshaped Array (2x4):\n", arr4)
 [5 6 7 8]]
 """
 
-print("\nSwap axes (0,1):\n", np.swapaxes(arr, 0, 1))
+# ADDED: Another reshape example to a 4x2 array
+arr4_alt = np.reshape(arr3, (4, 2))
+print("\nReshaped Array (4x2):\n", arr4_alt)
 """
-[[1 5]
- [2 6]
- [3 7]
- [4 8]]
-"""
-
-arr5 = arr3.flatten()
-print("\nFlattened Array:", arr5)
-"""
-[1 2 3 4 5 6 7 8]
+ [[1 2]
+ [3 4]
+ [5 6]
+ [7 8]]
 """
 
-arr6 = arr3.T
-print("\nTransposed Array:\n", arr6)
-"""
-[[[1 5]
-  [3 7]]
-
- [[2 6]
-  [4 8]]]
-"""
-
-arr7= arr3.ravel()                              # Ravel is similar to flatten but returns a view when possible.
-print("\nRaveled Array:", arr7)                 # Changes the same array without creating a new copy if possible.
-"""                                             # Not possible if the array is not contiguous in memory.
-[1 2 3 4 5 6 7 8]                               # Coniguous means that the elements are stored in adjacent memory locations.
-"""                                             # Contiguous arrays are more efficient for computations.
-"""
-Eg of when ravel returns a view:
-arr8 = np.array([[1, 2, 3], [4, 5, 6]])
-arr9 = arr8.ravel()
-arr9[0] = 10
-print("\nOriginal array after modifying raveled view:\n", arr8)
-"
-[[10  2  3]
-    [ 4  5  6]]
-"
-"""
-
+# Data type, item size, and memory usage
 print("\nData type of arr1:", arr1.dtype)
 """
 int64
@@ -109,62 +101,150 @@ print("\nTotal size of arr2 (in bytes):", arr2.nbytes)
 48
 """
 
-# np.copy() - Return array copy
+# np.copy() - Return array copy (deep copy)
 print("\nArray copy of arr1:", np.copy(arr1))
 """[1 2 3 4 5]"""
 
-# np.repeat() - Repeat elements
+# np.repeat() - Repeat each element consecutively
 print("\nArray with elements repeated twice:", np.repeat(arr1, 2))
 """[1 1 2 2 3 3 4 4 5 5]"""
 
-# np.tile() - Construct array by repeating
+# np.tile() - Repeat the whole array pattern
 print("\nArray tiled twice:", np.tile(arr1, 2))
 """[1 2 3 4 5 1 2 3 4 5]"""
-"""_________________________________________________________________________________________________________________________________________"""
 
-arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+"""_____________________________________________________________________________________________<TRANSPOSE, FLATTEN & RAVEL>____________________________________________"""
 
-print("\nElement at [1, 2]:", arr[1, 2])
+# Transpose and flattening/raveling are ways to change how you *view* the same data.
+# They help when you need a particular shape for operations like matrix multiplication.
+
+# Swap axes example (NOTE: original code references 'arr', so define a compatible arr)
+# ADDED: Define 'arr' explicitly as a 2D array to match the intended example
+arr = np.array([[1, 2, 3, 4],
+                [5, 6, 7, 8]])
+print("\nSwap axes (0,1):\n", np.swapaxes(arr, 0, 1))
+"""
+[[1 5]
+ [2 6]
+ [3 7]
+ [4 8]]
+"""
+
+# Flatten: returns a 1D copy
+arr5 = arr3.flatten()
+print("\nFlattened Array:", arr5)
+"""
+[1 2 3 4 5 6 7 8]
+"""
+
+# Transpose for higher-d arrays rearranges axes
+arr6 = arr3.T
+print("\nTransposed Array:\n", arr6)
+"""
+[[[1 5]
+  [3 7]]
+
+ [[2 6]
+  [4 8]]]
+"""
+
+# Ravel: similar to flatten, but returns a *view* when possible (no new copy)
+arr7 = arr3.ravel()                             # Ravel is similar to flatten but returns a view when possible.
+print("\nRaveled Array:", arr7)                 # Changes the same array without creating a new copy if possible.
+"""                                             # Not possible if the array is not contiguous in memory.
+[1 2 3 4 5 6 7 8]                               # Coniguous means that the elements are stored in adjacent memory locations.
+"""                                             # Contiguous arrays are more efficient for computations.
+
+# Eg of when ravel returns a view:
+arr8 = np.array([[1, 2, 3], [4, 5, 6]])
+arr9 = arr8.ravel()
+arr9[0] = 10
+print("\nOriginal array after modifying raveled view:\n", arr8)
+"""
+[[10  2  3]
+ [ 4  5  6]]
+"""
+
+# Example where ravel does NOT return a view (due to slicing / non-contiguous memory)
+arr10 = arr8[:, ::2]          # Take every second column, creates non-contiguous view
+arr11 = arr10.ravel()
+arr11[0] = 99                 # Will NOT modify arr8 in many cases
+print("\narr8 after ravel on non-contiguous slice (may be unchanged):\n", arr8)
+"""
+ [[10  2  3]
+ [ 4  5  6]]
+"""
+
+"""____________________________________________<INDEXING & SLICING>____________________________________________"""
+
+# Indexing and slicing let you read or modify specific elements, rows, columns, or subarrays.
+# This is crucial for feature selection, masking, and manipulating datasets efficiently. [web:2][web:5]
+
+import numpy as np
+
+arr = np.array([[1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9]])
+
+print("\nElement at [1, 2]:", arr[1, 2])  # row 1, column 2 (0-based indexing)
 """6"""
 
-print("First row:", arr[0])
+print("First row:", arr[0])               # Entire first row
 """[1 2 3]"""
 
-print("Last column:", arr[:, -1])
+print("Last column:", arr[:, -1])         # All rows, last column
 """[3 6 9]"""
 
-print("Middle column:", arr[:, 1])
+print("Middle column:", arr[:, 1])        # All rows, column index 1
 """[2 5 8]"""
 
-print("Sub-array (rows 0-1, cols 1-2):\n", arr[0:2, 1:3])
+print("Sub-array (rows 0-1, cols 1-2):\n", arr[0:2, 1:3])  # [rows 0 and 1], [cols 1 and 2]
 """
 [[2 3]
-  [5 6]]
+ [5 6]]
 """
 
 print("Every second element in flattened array:", arr.flatten()[::2])
 """[1 3 4 6 7 9]"""
 
-print("Reversed array:\n", arr[::-1, ::-1])
+print("Reversed array:\n", arr[::-1, ::-1])  # Reverse rows and columns
 """
 [[9 8 7]
-  [6 5 4]
-  [3 2 1]]
+ [6 5 4]
+ [3 2 1]]
 """
 
-print("Elements > 3:", arr[arr > 3])
+# Boolean indexing
+print("Elements > 3:", arr[arr > 3])          # Pick elements that satisfy a condition
 """[4 5 6 7 8 9]"""
 
 print("Even elements:", arr[arr % 2 == 0])
 """[2 4 6 8]"""
 
-indices = [0, 2, 4]
+# Advanced indexing with index arrays
+indices = ([0, 1, 2], [1, 2, 0])
+print("Elements at indices ([0, 1, 2], [1, 2, 0]):", arr[indices])
+"""[2 6 7]"""                                                             # At indices (0,1), (1,2), (2,0)
 
-print("Elements at indices [0, 2, 4]:", arr[indices])
-"""[1 3 5]"""
-"""_________________________________________________________________________________________________________________________________________"""
+# np.where for positions and conditional replacement
+print("Indices of elements > 5:", np.where(arr > 5))
+"""(array([2, 2, 2]), array([0, 1, 2]))"""
 
-# Zeros array
+print(np.where(arr > 5, arr, -1))  # Replace elements <= 5 with -1
+"""[[-1 -1 -1]
+  [-1 -1 6]
+  [7  8  9]]"""
+
+# Using np.where just to get indices as a list of coordinates
+rows, cols = np.where(arr % 2 == 1)
+print("Row indices of odd elements:", rows)
+print("Column indices of odd elements:", cols)
+
+"""____________________________________________<SPECIAL ARRAYS & PATTERN GENERATION>____________________________________________"""
+
+# Special Arrays
+# These are convenient for initializing weights, grids, masks, etc. [web:16]
+
 zeros_arr = np.zeros((3, 4))
 print("Zeros array:\n", zeros_arr)
 """
@@ -190,7 +270,7 @@ print("\nIdentity matrix:\n", identity)
  [0. 0. 1.]]
 """
 
-# Empty array (uninitialized)
+# Empty array (uninitialized) – contents are arbitrary
 empty_arr = np.empty((2, 2))                       # Note: values are uninitialized and may vary
 print("\nEmpty array:\n", empty_arr)               # Creates an array with random, leftover values in memory, not initialized.
 """
@@ -205,23 +285,34 @@ print("\nFull array (value=7):\n", full_arr)      # Creates an array and fills e
 [[7 7 7]
  [7 7 7]]
 """
-"""__________________________________________________________________________________________________________________________________________"""
 
-# arange (like range but returns array)
-range_arr = np.arange(0, 10, 2)
+# Array Generation (ranges, linspace etc.)
+range_arr = np.arange(0, 10, 2)  # start, stop, step
 print("arange(0, 10, 2):", range_arr)
 """
 [0 2 4 6 8]
 """
 
-# linspace (evenly spaced numbers)
-lin_arr = np.linspace(0, 1, 5)
+# linspace (evenly spaced numbers over interval)
+lin_arr = np.linspace(0, 1, 5)  # start, stop, num_points
 print("\nlinspace(0, 1, 5):", lin_arr)
 """
 [0.   0.25 0.5  0.75 1.  ]
 """
-"""__________________________________________________________________________________________________________________________________________"""
 
+# Logarithmic spacing example (useful for scales)
+log_arr = np.logspace(0, 3, 4)                    # 10^0 to 10^3, 4 points
+print("\nlogspace(0, 3, 4):", log_arr)
+"""
+[   1.   10.  100. 1000.]
+"""
+
+"""____________________________________________<ARITHMETIC & ELEMENTWISE OPERATIONS>____________________________________________"""
+
+# Arithmetic operations let you write “math on arrays” instead of explicit loops. [web:13]
+# For this section, assume a and b are defined 1D arrays of same length.
+
+# Define a and b explicitly (to keep all original lines valid)
 a = np.array([1, 2, 3])
 b = np.array([4, 5, 6])
 
@@ -229,10 +320,10 @@ print("np.negative(a):", np.negative(a))
 """[-1 -2 -3]"""                            # Element-wise negation
 
 print("np.sort(b):", np.sort(b))
-"""[4 5 6]"""
+"""[4 5 6]"""                               # Sorted Array
 
 print("np.unique([1, 2, 2, 3, 3, 3]):", np.unique([1, 2, 2, 3, 3, 3]))
-"""[1 2 3]"""
+"""[1 2 3]"""                               # Unique Elements
 
 print("a + b:", a + b)                      # Alternatively, np.add(a, b)
 """[5 7 9]"""                               # Addition of corresponding elements
@@ -253,42 +344,70 @@ print("a % 2:", a % 2)                      # Alternatively, np.mod(a, 2)
 """[1 0 1]"""                               # Element-wise modulus
 
 print("np.floor_divide(a, b):", np.floor_divide(a, b))
-"""[0 0 0]"""                                                             # Floor division of corresponding elements
+"""[0 0 0]"""                               # Floor division of corresponding elements
 
 print("np.absolute([-1, -2, 3]):", np.absolute([-1, -2, 3]))
-"""[1 2 3]"""                                                             # Element-wise absolute value
+"""[1 2 3]"""                               # Element-wise absolute value
 
 print("np.reciprocal(b.astype(float)):", np.reciprocal(b.astype(float)))
-"""[0.25 0.2  0.16666667]"""                                              # Element-wise reciprocal
+"""[0.25 0.2  0.16666667]"""                # Element-wise reciprocal
 
-print("np.dot(a, b):", np.dot(a, b))                                      # Dot product of two arrays
-"""32"""                                                                  # Calculated as 1*4 + 2*5 + 3*6
+print("np.dot(a, b):", np.dot(a, b))        # Dot product of two arrays
+"""32"""                                    # Calculated as 1*4 + 2*5 + 3*6
 
-print("np.cross(a, b):", np.cross(a, b))                                  # Cross product of two 3D vectors
-"""[-3  6 -3]"""                                                          # Calculated as [2*6 - 3*5, 3*4 - 1*6, 1*5 - 2*4]
+print("np.cross(a, b):", np.cross(a, b))    # Cross product of two 3D vectors
+"""[-3  6 -3]"""                            # Calculated as [2*6 - 3*5, 3*4 - 1*6, 1*5 - 2*4]
 
-print("np.square(a):", np.square(a))                                      # Element-wise square
+print("np.square(a):", np.square(a))        # Element-wise square
 """[1 4 9]"""
 
-print("np.sqrt(a):", np.sqrt(a))                                          # Element-wise square root
+print("np.sqrt(a):", np.sqrt(a))            # Element-wise square root
 """[1.         1.41421356 1.73205081]"""
 
-print("np.sum(a):", np.sum(a))                                            # Sum of all elements
+print("np.sum(a):", np.sum(a))              # Sum of all elements
 """6"""
 
-print("np.prod(a):", np.prod(a))                                          # Product of all elements
+print("np.prod(a):", np.prod(a))            # Product of all elements
 """6"""
 
-print("np.cumsum(a):", np.cumsum(a))                                      # Cumulative sum
+print("np.cumsum(a):", np.cumsum(a))        # Cumulative sum
 """[1 3 6]"""
 
-print("np.cumprod(a):", np.cumprod(a))                                    # Cumulative product
+print("np.cumprod(a):", np.cumprod(a))      # Cumulative product
 """[ 1  2  6]"""
 
-print("np.diff(a):", np.diff(a))                                          # Discrete difference
-"""[1 1]"""                                                               # Computes the difference between consecutive elements
-"""__________________________________________________________________________________________________________________________________________"""
+print("np.diff(a):", np.diff(a))            # Discrete difference
+"""[1 1]"""                                 # Computes the difference between consecutive elements
 
+# Sorting and deleting along axes (2D)
+arr = np.array([[6, 2, 9, 1, 5],
+                [3, 8, 7, 4, 0],
+                [5, 2, 1, 9, 6]])
+print(np.sort(arr, axis=0))                        # Sort along columns
+"""[[3 2 1 1 0]
+  [5 2 7 4 5]
+  [6 8 9 9 6]]"""
+
+print(np.sort(arr, axis=1))                        # Sort along rows
+"""[[1 2 5 6 9]
+  [0 3 4 7 8]
+  [1 2 5 6 9]]"""
+
+print(np.delete(arr, 2, axis=1))                  # Delete 3rd column
+"""[[6 2 1 5]
+  [3 8 4 0]
+  [5 2 9 6]]"""
+
+print(np.delete(arr, 1, axis=0))                  # Delete 2nd row
+"""[[6 2 9 1 5]
+  [5 2 1 9 6]]"""
+
+"""____________________________________________<ROUNDING & PRECISION>____________________________________________"""
+
+# Rounding and precision functions are useful for formatting results and controlling
+# floating-point noise in numeric computations. [web:13]
+
+# Define arr as a float array for rounding demo
 arr = np.array([1.234, 2.5, 3.5])
 
 print("np.round(arr, 2):", np.round(arr, 2))               # Rounds to 2 decimal places
@@ -308,8 +427,12 @@ print("np.fix(arr):", np.fix(arr))                         # Rounds towards zero
 
 print("np.modf(arr):", np.modf(arr))                       # Splits into fractional and integral parts
 """(array([0.234, 0.5  , 0.5  ]), array([1., 2., 3.]))"""
-"""__________________________________________________________________________________________________________________________________________"""
 
+"""_____________________________________________________________________________________________<LOGICAL OPERATIONS & COMPARISONS>____________________________________________"""
+
+# Logical operations work on boolean arrays and are useful for masks, filters, and conditions.
+
+# Define boolean arrays
 bool_arr1 = np.array([True, True, False, False])
 bool_arr2 = np.array([True, False, True, False])
 
@@ -325,28 +448,53 @@ print("np.logical_not(bool_arr1):", np.logical_not(bool_arr1))                  
 print("np.logical_xor(bool_arr1, bool_arr2):", np.logical_xor(bool_arr1, bool_arr2))      # Logical XOR
 """[False  True  True False]"""
 
-print("np.where(bool_arr1, 1, 0):", np.where(bool_arr1, 1, 0))                          # Conditional selection
-"""[1 1 0 0]""" 
-"""__________________________________________________________________________________________________________________________________________"""
-A = np.array([[1, 2], [3, 4]]) 
-B = np.array([[5, 6], [7, 8]]) 
+print("np.where(bool_arr1, 1, 0):", np.where(bool_arr1, 1, 0))                            # Conditional selection
+"""[1 1 0 0]"""
+
+# Comparison functions (return boolean arrays)
+print("np.equal(a, b):", np.equal(a, b))                              # Alternative to ==
+print("np.not_equal(a, b):", np.not_equal(a, b))                      # Alternative to !=
+print("np.greater(a, b):", np.greater(a, b))                          # Alternative to >
+print("np.greater_equal(a, b):", np.greater_equal(a, b))              # Alternative to >=
+print("np.less(a, b):", np.less(a, b))                                # Alternative to <
+print("np.less_equal(a, b):", np.less_equal(a, b))                    # Alternative to <=
+
+""" Results:
+np.equal(a, b): [False  True False]
+np.not_equal(a, b): [ True False  True]
+np.greater(a, b): [False False  True]
+np.greater_equal(a, b): [False  True  True]
+np.less(a, b): [ True False False]
+np.less_equal(a, b): [ True  True False]
+"""
+
+"""_____________________________________________________________________________________________<MATRIX & LINEAR ALGEBRA OPERATIONS>____________________________________________"""
+
+# Linear algebra operations are crucial for solving systems of equations, PCA, ML models, etc.
+
+# Define A, B, b for this section
+A = np.array([[1, 2],
+              [3, 4]])
+B = np.array([[5, 6],
+              [7, 8]])
+b_vec = np.array([4, 5, 6])                  # Column vector flattened
 
 print("np.matmul(A, B):", np.matmul(A, B))   # Matrix multiplication
 """[[19 22] 
-  [43 50]]""" 
+    [43 50]]""" 
 
-print("np.inner(A, B):", np.inner(A, B))     # Inner product
+print("np.inner(A, B):", np.inner(A, B))     # Inner product (sum of elementwise products along last axis)
 """[[19 22]   
-  [43 50]]"""                                # Calculated as [[1*5 + 2*7, 1*6 + 2*8], [3*5 + 4*7, 3*6 + 4*8]]
+    [43 50]]"""                              # Calculated as [[1*5 + 2*7, 1*6 + 2*8], [3*5 + 4*7, 3*6 + 4*8]]
   
-print("np.outer(A, B):", np.outer(A, B))     # Outer product
+print("np.outer(A, B):", np.outer(A, B))     # Outer product (flattened A with flattened B)
 """[[ 5  6  7  8]   
-  [10 12 14 16]   
-  [15 18 21 24]   
-  [20 24 28 32]]"""                          # Calculated as [[1*5, 1*6, 1*7, 1*8], [2*5, 2*6, 2*7, 2*8], [3*5, 3*6, 3*7, 3*8], [4*5, 4*6, 4*7, 4*8]]
+    [10 12 14 16]   
+    [15 18 21 24]   
+    [20 24 28 32]]"""                        # Calculated as [[1*5, 1*6, 1*7, 1*8], [2*5, 2*6, 2*7, 2*8], [3*5, 3*6, 3*7, 3*8], [4*5, 4*6, 4*7, 4*8]]
   
-print("np.dot(A, b):", np.dot(A, b))         # Dot product (matrix-vector multiplication)
-"""[17 39]"""                                # Calculated as [1*4 + 2*5 + 3*6, 3*4 + 4*5 + 6*6]
+print("np.dot(A, b):", np.dot(A, np.array([4, 5])))         # Dot product (matrix-vector multiplication)
+"""[17 39]"""                                               # Calculated as [1*4 + 2*5, 3*4 + 4*5]
   
 print("np.trace(A):", np.trace(A))           # Trace of a matrix
 """5"""                                      # Calculated as 1 + 4
@@ -364,10 +512,91 @@ b = np.array([5, 10])
 x = np.linalg.solve(A, b) 
 print("Solution x:", x)
 """[1. 3.]"""
-"""__________________________________________________________________________________________________________________________________________"""
 
-print("np.mean(a):", np.mean(a))                                          # Mean (average) of elements
-"""2.0"""
+# Advanced linear algebra: matrix_power, rank, eigenvalues, SVD, QR, Cholesky, norms, condition numbers, tensor equations. [web:13]
+
+print("np.linalg.matrix_power(A, 2):", np.linalg.matrix_power(A, 2))
+"""[[ 7 10]
+  [15 22]]"""                                                            # Calculated as A * A
+
+print("np.linalg.matrix_rank(A):", np.linalg.matrix_rank(A))
+"""2"""                                                                  # Rank of matrix A
+
+print("np.convolve([1, 2, 3], [0, 1, 0.5], mode='full'):", 
+      np.convolve([1, 2, 3], [0, 1, 0.5], mode='full'))
+"""[0.  1.  2.5 4.  1.5]"""                                              # Full convolution of two sequences
+
+print("np.correlate([1, 2, 3], [0, 1, 0.5], mode='full'):", 
+      np.correlate([1, 2, 3], [0, 1, 0.5], mode='full'))
+"""[1.5 4.  2.5 1.  0. ]"""                                              # Full correlation of two sequences
+
+print("np.corrcoef([1, 2, 3], [1, 2, 3]):", 
+      np.corrcoef([1, 2, 3], [1, 2, 3]))
+"""[[1. 1.]
+  [1. 1.]]"""                                                            # Correlation coefficient matrix
+
+print("np.cov([1, 2, 3], [1, 2, 3]):", 
+      np.cov([1, 2, 3], [1, 2, 3]))
+"""[[1. 1.]
+  [1. 1.]]"""                                                            # Covariance matrix
+
+eigenvalues, eigenvectors = np.linalg.eig(A)
+print("Eigenvalues of A:", eigenvalues)
+"""[-0.37228132  5.37228132]"""
+print("Eigenvectors of A:\n", eigenvectors)
+"""[[-0.82456484 -0.41597356]
+  [ 0.56576746 -0.90937671]]"""
+
+eigenvalues_h, eigenvectors_h = np.linalg.eigh(np.array([[2, 1], [1, 2]]))
+print("Eigenvalues of Hermitian matrix:", eigenvalues_h)
+"""[1. 3.]"""
+print("Eigenvectors of Hermitian matrix:\n", eigenvectors_h)
+"""[[-0.70710678 -0.70710678]
+  [ 0.70710678 -0.70710678]]"""
+
+U, S, VT = np.linalg.svd(A)
+print("U matrix from SVD:\n", U)
+"""[[ -0.57604844 -0.81741556]
+  [ -0.81741556  0.57604844]]"""
+print("Singular values from SVD:", S)
+"""[5.4649857  0.36596619]"""
+print("VT matrix from SVD:\n", VT)
+"""[[-0.57604844 -0.81741556]
+  [ 0.81741556 -0.57604844]]"""
+
+Q, R = np.linalg.qr(A)
+print("Q matrix from QR decomposition:\n", Q)
+"""[[-0.31622777 -0.9486833 ]
+  [-0.9486833   0.31622777]]"""
+print("R matrix from QR decomposition:\n", R)
+"""[[-3.16227766 -4.42718872]
+  [ 0.          0.63245553]]"""
+
+L = np.linalg.cholesky(np.array([[4, 2], [2, 3]]))
+print("L matrix from Cholesky decomposition:\n", L)
+"""[[2.         0.        ]
+  [1.         1.41421356]]"""
+
+print("np.linalg.norm(a):", np.linalg.norm(a))
+"""3.7416573867739413"""                                                 # Euclidean norm (L2 norm)
+
+print("np.linalg.cond(A):", np.linalg.cond(A))
+"""14.933034373659268"""                                                 # Condition number of matrix A
+
+A = np.array([
+    [[[1, 0], [0, 0]],
+     [[0, 1], [0, 0]]],
+    [[[0, 0], [1, 0]],
+     [[0, 0], [0, 1]]]
+])
+B = np.array([[5, 6], [7, 8]])
+X = np.linalg.tensorsolve(A, B)
+print("Solution X using tensorsolve:\n", X)
+
+
+"""_____________________________________________________________________________________________<STATISTICS, MIN/MAX & PERCENTILES>____________________________________________"""
+
+# Statistical Functions – summarizing data quickly is important for EDA and ML. [web:13]
 
 print("np.median(a):", np.median(a))                                      # Median
 """2.0"""
@@ -378,7 +607,6 @@ print("np.std(a):", np.std(a))                                            # Stan
 print("np.var(a):", np.var(a))                                            # Variance
 """0.6666666666666666"""                                                  # ((1-2)^2 + (2-2)^2 + (3-2)^2) / 3
 
-
 print("np.any(a > 2):", np.any(a > 2))                                    # Any element satisfies condition
 """True"""
 
@@ -387,9 +615,9 @@ print("np.all(a > 0):", np.all(a > 0))                                    # All 
 
 print("np.percentile(a, 75):", np.percentile(a, 75))                      # Percentile
 """2.5"""                                                                 # 75th percentile value
-"""__________________________________________________________________________________________________________________________________________"""
 
-print("np.max(a):", np.max(a))                                            # Maximum element
+# Min/Max and Arg Functions
+print("np.max(a):", np.max(a))                                            # Maximum value
 """3"""
 
 print("np.min(a):", np.min(a))                                            # Minimum element
@@ -400,8 +628,10 @@ print("np.argmax(a):", np.argmax(a))                                      # Inde
 
 print("np.argmin(a):", np.argmin(a))                                      # Index of the minimum element
 """0"""
-"""__________________________________________________________________________________________________________________________________________"""
 
+"""_____________________________________________________________________________________________<EXPONENTIALS, LOGS & TRIG FUNCTIONS>____________________________________________"""
+
+# Exponential and Logarithmic Functions
 print("np.exp(a):", np.exp(a))                                # e^x
 """[ 2.71828183  7.3890561  20.08553692]"""
 
@@ -416,9 +646,9 @@ print("np.log2(a):", np.log2(a))                              # Base-2 log
 
 print("np.log10(a):", np.log10(a))                            # Base-10 log
 """[0.         0.30103    0.47712125]"""
-"""__________________________________________________________________________________________________________________________________________"""
 
-angles = np.array([0, np.pi/2, np.pi])
+# Trigonometric Functions – important in signal processing, geometry, etc.
+angles = np.array([0, np.pi / 2, np.pi])                      # Define angles in radians
 
 print("np.sin(angles):", np.sin(angles))
 """[0.0000000e+00 1.0000000e+00 1.2246468e-16]"""                     # Note: The last value is effectively zero; it appears due to floating-point precision limitations.
@@ -454,28 +684,85 @@ print("np.arccosh([1, 2, 3]):", np.arccosh([1, 2, 3]))
 """[0.         1.3169579  1.76274717]"""                              # Calculated as (arccosh(x) = ln(x + sqrt(x^2 - 1)))
 
 print("np.arctanh([0, 0.5, 0.9]):", np.arctanh([0, 0.5, 0.9]))
-"""[0.         0.54930614 1.47221949]"""                              # Calculated as (arctanh(x) = 0.5 * ln((1 + x) / (1 - x)))
-"""__________________________________________________________________________________________________________________________________________"""
+"""[0.         0.54930614 1.47221949]"""                              # Calculated as (arctanh(x) = 0.5 * ln((1 + x) / (1 - x)))"""
 
+"""_____________________________________________________________________________________________<BROADCASTING>____________________________________________"""
+
+# Broadcasting lets NumPy apply operations on arrays of different shapes, by virtually
+# "stretching" smaller arrays along dimensions of size 1 or missing dimensions. [web:17][web:14]
+# Rules:
+# 1. Compare shapes from right to left.
+# 2. Dimensions are compatible if equal or one of them is 1.
+# 3. NumPy broadcasts the smaller array along dimensions with size 1.
+
+""" 
+Array Broadcasting allows NumPy to perform operations on arrays of different shapes in a way that makes sense mathematically.
+
+Here's how it works:
+1. Alignment: NumPy compares the shapes of the two arrays starting from the trailing dimensions (rightmost) and works its way left.
+2. Compatibility: Two dimensions are compatible when:
+    - They are equal, or
+    - One of them is 1 (the array can be "stretched" to match the other).
+3. Stretching: If one of the dimensions is 1, NumPy virtually stretches that array along that dimension to match the other array's size. This stretching does not involve copying data; it's a conceptual operation.
+
+For example:
+a = np.array([[1, 2, 3],
+              [4, 5, 6]])
+b = np.array([10, 20, 30])
+When we add a and b:
+result = a + b
+The shape of a is (2, 3) and the shape of b is (3,). NumPy treats b as if it were:
+[[10, 20, 30],
+ [10, 20, 30]]
+Then it performs element-wise addition:
+[[1+10, 2+20, 3+30],
+ [4+10, 5+20, 6+30]]
+resulting in:
+[[11, 22, 33],
+ [14, 25, 36]]
+"""
+
+# Different examples of broadcasting
+a = np.array([[1, 2, 3],
+              [4, 5, 6]])
+b = np.array([10, 20, 30])
+result = a + b
+print("Broadcasting result of a + b:\n", result)
+"""[[11 22 33]
+  [14 25 36]]"""
+
+result = a * b
+print("Broadcasting result of a * b:\n", result)
+"""[[10 40 90]
+  [40 100 180]]"""
+
+c = np.array([[1], [2]])
+result = a + c
+print("Broadcasting result of a + c:\n", result)
+"""[[2 3 4]
+  [6 7 8]]"""
+
+result = a * c
+print("Broadcasting result of a * c:\n", result)
+"""[[ 1  2  3]
+  [ 8 10 12]]"""
+
+# Example where broadcasting fails
+d = np.array([[1, 2],
+              [3, 4],
+              [5, 6]])
+# This will raise an error because shapes (2,3) and (3,2) are not compatible for broadcasting
+# result = a + d
+# print("Broadcasting result of a + d:\n", result)
+### Error: ValueError: operands could not be broadcast together with shapes (2,3) (3,2)
+
+"""____________________________________________<JOINING & SPLITTING ARRAYS>____________________________________________"""
+
+# Joining and splitting arrays are useful for building and breaking datasets or feature matrices. [web:7]
+
+# For this section, ensure a and b are 1D arrays
 a = np.array([1, 2, 3])
 b = np.array([2, 2, 2])
-
-print("np.equal(a, b):", np.equal(a, b))                              # Alternative to ==
-print("np.not_equal(a, b):", np.not_equal(a, b))                      # Alternative to !=
-print("np.greater(a, b):", np.greater(a, b))                          # Alternative to >
-print("np.greater_equal(a, b):", np.greater_equal(a, b))              # Alternative to >=
-print("np.less(a, b):", np.less(a, b))                                # Alternative to <
-print("np.less_equal(a, b):", np.less_equal(a, b))                    # Alternative to <=
-
-""" Results:
-np.equal(a, b): [False  True False]
-np.not_equal(a, b): [ True False  True]
-np.greater(a, b): [False False  True]
-np.greater_equal(a, b): [False  True  True]
-np.less(a, b): [ True False False]
-np.less_equal(a, b): [ True  True False]
-"""
-"""__________________________________________________________________________________________________________________________________________"""
 
 print("np.concatenate([a, b]):", np.concatenate([a, b]))
 """[1 2 3 2 2 2]"""
@@ -503,9 +790,11 @@ print("np.hsplit(np.array([[1,2,3],[4,5,6]]), 3):", np.hsplit(np.array([[1,2,3],
 print("np.vsplit(np.array([[1,2,3],[4,5,6]]), 2):", np.vsplit(np.array([[1,2,3],[4,5,6]]), 2))
 """[array([[1, 2, 3]]), array([[4, 5, 6]])]"""
 
-"""__________________________________________________________________________________________________________________________________________"""
+"""____________________________________________<MISCELLANEOUS NUMERICAL UTILITIES>____________________________________________"""
 
-print("np.sign([-5, 0, 5]):", np.sign([-5, 0, 5]))
+# Miscellaneous Functions (sign, clip, diff, gradient, integration)
+
+print("np.sign(np.array([-3, 0, 4])):", np.sign(np.array([-3, 0, 4])))
 """[-1  0  1]"""                                                # Sign function
 
 print("np.clip(a, 1.5, 2.5):", np.clip(a, 1.5, 2.5))            # Clip values to a specified range
@@ -517,11 +806,14 @@ print("np.diff(a):", np.diff(a))                                # Discrete diffe
 print("np.gradient(a):", np.gradient(a))                        # Numerical gradient
 """[1. 1. 1.]"""                                                # Calculates the gradient (rate of change) of the array.
 
-print("np.trapz(a):", np.trapz(a))                              # Trapezoidal integration
+# Use trapz with a simple x-axis for clarity
+x_axis = np.arange(1, 5)
+print("np.trapz(x_axis):", np.trapz(x_axis))                    # Trapezoidal integration
 """12.0"""                                                      # Calculated as (1+2)/2*1 + (2+3)/2*1 + (3+4)/2*1 + (4+5)/2*1 = 12.0
-"""__________________________________________________________________________________________________________________________________________"""
 
-# Random array
+"""____________________________________________<RANDOM NUMBER GENERATION>____________________________________________"""
+
+# Random Number Generation – useful for simulations, initializing weights, etc. [web:13]
 
 # Seed for reproducibility
 np.random.seed(42)
@@ -576,7 +868,7 @@ np.random.shuffle(shuffle_arr)
 print("Shuffled array:", shuffle_arr)
 """[8 1 5 0 7 2 9 4 3 6]"""
 
-# Permutation (returns shuffled array)
+# Permutation (returns shuffled copy)
 print("np.random.permutation(5):", np.random.permutation(5))
 """[3 0 1 4 2]"""
 
@@ -590,8 +882,12 @@ print("np.random.random_sample():", np.random.random_sample())
 print("np.random.random_sample((2, 3)):", np.random.random_sample((2, 3)))
 """[[0.093324 0.575946 0.929324]
  [0.318569 0.66741  0.131798]]"""
-"""__________________________________________________________________________________________________________________________________________"""
 
+"""____________________________________________<SET OPERATIONS>____________________________________________"""
+
+# Set-like operations on 1D arrays are useful for categorical data, membership tests, etc.
+
+# Define arr1 and arr2 for set operations
 arr1 = np.array([1, 2, 3, 4, 5])
 arr2 = np.array([3, 4, 5, 6, 7])
 
@@ -613,9 +909,11 @@ print("np.in1d(arr1, arr2):", np.in1d(arr1, arr2))                   # Checks wh
 print("np.isin(arr1, arr2):", np.isin(arr1, arr2))                   # Similar to in1d but returns an array of the same shape as arr1
 """[False False  True  True  True]"""
 
-"""__________________________________________________________________________________________________________________________________________"""
+"""____________________________________________<STRING OPERATIONS>____________________________________________"""
 
-# np.char.add() - Element-wise string concatenation
+# NumPy string operations are mainly helpful when you have arrays of small strings
+# (e.g. labels) and want vectorized transformations. [web:13]
+
 print("np.char.add(['Hello, ', 'Good '], ['World!', 'Morning!']):", 
       np.char.add(['Hello, ', 'Good '], ['World!', 'Morning!']))
 """['Hello, World!' 'Good Morning!']"""
@@ -664,150 +962,46 @@ print("np.char.replace(['Hello World', 'Good Morning'], 'o', '0'):",
       np.char.replace(['Hello World', 'Good Morning'], 'o', '0'))
 """['Hell0 W0rld' 'G00d M0rning']"""
 
-"""__________________________________________________________________________________________________________________________________________"""
+"""____________________________________________<CONSTANTS & NAN-AWARE FUNCTIONS>____________________________________________"""
 
-A = np.array([[1, 2], [3, 4]])
-
-# np.linalg.matrix_power() - Raise matrix to power
-print("np.linalg.matrix_power(A, 2):", np.linalg.matrix_power(A, 2))
-"""[[ 7 10]
-  [15 22]]"""                                                            # Calculated as A * A
-
-# np.linalg.matrix_rank() - Matrix rank
-print("np.linalg.matrix_rank(A):", np.linalg.matrix_rank(A))
-"""2"""                                                                  # Rank of matrix A
-
-# np.convolve() - Convolution
-print("np.convolve([1, 2, 3], [0, 1, 0.5], mode='full'):", 
-      np.convolve([1, 2, 3], [0, 1, 0.5], mode='full'))
-"""[0.  1.  2.5 4.  1.5]"""                                              # Full convolution of two sequences
-
-# np.correlate() - Correlation
-print("np.correlate([1, 2, 3], [0, 1, 0.5], mode='full'):", 
-      np.correlate([1, 2, 3], [0, 1, 0.5], mode='full'))
-"""[1.5 4.  2.5 1.  0. ]"""                                              # Full correlation of two sequences
-
-# np.corrcoef() - Correlation coefficient
-print("np.corrcoef([1, 2, 3], [1, 2, 3]):", 
-      np.corrcoef([1, 2, 3], [1, 2, 3]))
-"""[[1. 1.]
-  [1. 1.]]"""                                                            # Correlation coefficient matrix
-
-# np.cov() - Covariance matrix
-print("np.cov([1, 2, 3], [1, 2, 3]):", 
-      np.cov([1, 2, 3], [1, 2, 3]))
-"""[[1. 1.]
-  [1. 1.]]"""                                                            # Covariance matrix
-
-# np.linalg.eig() - Eigenvalues and eigenvectors
-eigenvalues, eigenvectors = np.linalg.eig(A)
-print("Eigenvalues of A:", eigenvalues)
-"""[-0.37228132  5.37228132]"""
-print("Eigenvectors of A:\n", eigenvectors)
-"""[[-0.82456484 -0.41597356]
-  [ 0.56576746 -0.90937671]]"""
-
-# np.linalg.eigh() - Eigenvalues/eigenvectors of Hermitian matrix
-eigenvalues_h, eigenvectors_h = np.linalg.eigh(np.array([[2, 1], [1, 2]]))
-print("Eigenvalues of Hermitian matrix:", eigenvalues_h)
-"""[1. 3.]"""
-print("Eigenvectors of Hermitian matrix:\n", eigenvectors_h)
-"""[[-0.70710678 -0.70710678]
-  [ 0.70710678 -0.70710678]]"""
-
-# np.linalg.svd() - Singular value decomposition
-U, S, VT = np.linalg.svd(A)
-print("U matrix from SVD:\n", U)
-"""[[ -0.57604844 -0.81741556]
-  [ -0.81741556  0.57604844]]"""
-print("Singular values from SVD:", S)
-"""[5.4649857  0.36596619]"""
-print("VT matrix from SVD:\n", VT)
-"""[[-0.57604844 -0.81741556]
-  [ 0.81741556 -0.57604844]]"""
-
-# np.linalg.qr() - QR decomposition
-Q, R = np.linalg.qr(A)
-print("Q matrix from QR decomposition:\n", Q)
-"""[[-0.31622777 -0.9486833 ]
-  [-0.9486833   0.31622777]]"""
-print("R matrix from QR decomposition:\n", R)
-"""[[-3.16227766 -4.42718872]
-  [ 0.          0.63245553]]"""
-
-# np.linalg.cholesky() - Cholesky decomposition
-L = np.linalg.cholesky(np.array([[4, 2], [2, 3]]))
-print("L matrix from Cholesky decomposition:\n", L)
-"""[[2.         0.        ]
-  [1.         1.41421356]]"""
-
-# np.linalg.norm() - Matrix or vector norm
-print("np.linalg.norm(a):", np.linalg.norm(a))
-"""3.7416573867739413"""                                                 # Euclidean norm (L2 norm)
-
-# np.linalg.cond() - Condition number
-print("np.linalg.cond(A):", np.linalg.cond(A))
-"""14.933034373659268"""                                                 # Condition number of matrix A
-
-# np.linalg.tensorsolve() - Solve tensor equation
-B = np.array([[5, 6], [7, 8]])
-X = np.linalg.tensorsolve(A, B)
-print("Solution X for tensor equation AX = B:\n", X)
-"""[[ -4.   5.]
-  [  6.5 -7.]]"""
-
-"""__________________________________________________________________________________________________________________________________________"""
-
-# np.pi
+# Constants and Special Values
 print("Value of np.pi:", np.pi)
 """3.141592653589793"""
 
-# np.e
 print("Value of np.e:", np.e)
 """2.718281828459045"""
 
-# np.inf
 print("Value of np.inf:", np.inf)
 """inf"""
 
-# np.nan
 print("Value of np.nan:", np.nan)
 """nan"""                                                  # Not a Number
 
-# np.NINF (negative infinity)
-print("Value of np.NINF:", np.NINF)
-"""-inf"""
+# print("Value of np.NINF:", np.NINF)                      # No longer in use
+# """-inf"""                                               # Use '-np.inf' instead
 
-# np.NZERO (negative zero)
-print("Value of np.NZERO:", np.NZERO)
-"""-0.0"""
+# print("Value of np.NZERO:", np.NZERO)                    # No longer in use
+# """-0.0"""                                               # Use '-0.0' instead
 
-# np.PZERO (positive zero)
-print("Value of np.PZERO:", np.PZERO)
-"""0.0"""
+# print("Value of np.PZERO:", np.PZERO)                    # No longer in use
+# """0.0"""                                                # Use '0.0' instead
 
-# np.euler_gamma
 print("Value of np.euler_gamma:", np.euler_gamma)          # Euler-Mascheroni constant
 """0.5772156649015329"""
 
-# np.newaxis
+# np.newaxis for increasing dimensions (e.g., converting 1D to column vector)
 arr = np.array([1, 2, 3])
 print("Using np.newaxis to increase dimensions:", arr[:, np.newaxis])
 """[[1]
   [2]
   [3]]"""
 
-# np.nanmean() - Mean ignoring NaNs
 arr_with_nan = np.array([1, 2, np.nan, 4])
 print("np.nanmean(arr_with_nan):", np.nanmean(arr_with_nan))
 """2.3333333333333335"""                                     # Mean of [1, 2, 4] ignoring NaN
 
-# np.nanstd() - Standard deviation ignoring NaNs
 print("np.nanstd(arr_with_nan):", np.nanstd(arr_with_nan))
 """1.247219128924647"""                                      # Std dev of [1, 2, 4] ignoring NaN
 
-# np.nanvar() - Variance ignoring NaNs
 print("np.nanvar(arr_with_nan):", np.nanvar(arr_with_nan))
 """1.5555555555555556"""                                     # Variance of [1, 2, 4] ignoring NaN
-
-"""__________________________________________________________________________________________________________________________________________"""
