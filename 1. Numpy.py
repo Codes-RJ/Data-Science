@@ -1,4 +1,4 @@
-"""_____________________________________________________________________________________________<INSTALLATION & BASICS>____________________________________________"""
+"""________________________________________________<INSTALLATION & BASICS>________________________________________________"""
 
 # What is NumPy?
 # NumPy provides the ndarray (N-dimensional array) object and many optimized
@@ -17,7 +17,7 @@
 import numpy as np
 print("NumPy version:", np.__version__)  # Optional: check installed version
 
-"""____________________________________________<ARRAY CREATION & BASIC ATTRIBUTES>____________________________________________"""
+"""__________________________________________<ARRAY CREATION & BASIC ATTRIBUTES>__________________________________________"""
 
 # Creating an Array from Python list (1D array / vector)
 arr1 = np.array([1, 2, 3, 4, 5])
@@ -113,7 +113,7 @@ print("\nArray with elements repeated twice:", np.repeat(arr1, 2))
 print("\nArray tiled twice:", np.tile(arr1, 2))
 """[1 2 3 4 5 1 2 3 4 5]"""
 
-"""_____________________________________________________________________________________________<TRANSPOSE, FLATTEN & RAVEL>____________________________________________"""
+"""_____________________________________________<TRANSPOSE, FLATTEN & RAVEL>______________________________________________"""
 
 # Transpose and flattening/raveling are ways to change how you *view* the same data.
 # They help when you need a particular shape for operations like matrix multiplication.
@@ -175,7 +175,7 @@ print("\narr8 after ravel on non-contiguous slice (may be unchanged):\n", arr8)
  [ 4  5  6]]
 """
 
-"""____________________________________________<INDEXING & SLICING>____________________________________________"""
+"""__________________________________________________<INDEXING & SLICING>_________________________________________________"""
 
 # Indexing and slicing let you read or modify specific elements, rows, columns, or subarrays.
 # This is crucial for feature selection, masking, and manipulating datasets efficiently. [web:2][web:5]
@@ -240,7 +240,7 @@ rows, cols = np.where(arr % 2 == 1)
 print("Row indices of odd elements:", rows)
 print("Column indices of odd elements:", cols)
 
-"""____________________________________________<SPECIAL ARRAYS & PATTERN GENERATION>____________________________________________"""
+"""_________________________________________<SPECIAL ARRAYS & PATTERN GENERATION>_________________________________________"""
 
 # Special Arrays
 # These are convenient for initializing weights, grids, masks, etc. [web:16]
@@ -307,7 +307,7 @@ print("\nlogspace(0, 3, 4):", log_arr)
 [   1.   10.  100. 1000.]
 """
 
-"""____________________________________________<ARITHMETIC & ELEMENTWISE OPERATIONS>____________________________________________"""
+"""_________________________________________<ARITHMETIC & ELEMENTWISE OPERATIONS>_________________________________________"""
 
 # Arithmetic operations let you write “math on arrays” instead of explicit loops. [web:13]
 # For this section, assume a and b are defined 1D arrays of same length.
@@ -402,7 +402,7 @@ print(np.delete(arr, 1, axis=0))                  # Delete 2nd row
 """[[6 2 9 1 5]
   [5 2 1 9 6]]"""
 
-"""____________________________________________<ROUNDING & PRECISION>____________________________________________"""
+"""_________________________________________________<ROUNDING & PRECISION>________________________________________________"""
 
 # Rounding and precision functions are useful for formatting results and controlling
 # floating-point noise in numeric computations. [web:13]
@@ -428,7 +428,7 @@ print("np.fix(arr):", np.fix(arr))                         # Rounds towards zero
 print("np.modf(arr):", np.modf(arr))                       # Splits into fractional and integral parts
 """(array([0.234, 0.5  , 0.5  ]), array([1., 2., 3.]))"""
 
-"""_____________________________________________________________________________________________<LOGICAL OPERATIONS & COMPARISONS>____________________________________________"""
+"""__________________________________________<LOGICAL OPERATIONS & COMPARISONS>___________________________________________"""
 
 # Logical operations work on boolean arrays and are useful for masks, filters, and conditions.
 
@@ -468,7 +468,7 @@ np.less(a, b): [ True False False]
 np.less_equal(a, b): [ True  True False]
 """
 
-"""_____________________________________________________________________________________________<MATRIX & LINEAR ALGEBRA OPERATIONS>____________________________________________"""
+"""_________________________________________<MATRIX & LINEAR ALGEBRA OPERATIONS>__________________________________________"""
 
 # Linear algebra operations are crucial for solving systems of equations, PCA, ML models, etc.
 
@@ -594,7 +594,7 @@ X = np.linalg.tensorsolve(A, B)
 print("Solution X using tensorsolve:\n", X)
 
 
-"""_____________________________________________________________________________________________<STATISTICS, MIN/MAX & PERCENTILES>____________________________________________"""
+"""__________________________________________<STATISTICS, MIN/MAX & PERCENTILES>__________________________________________"""
 
 # Statistical Functions – summarizing data quickly is important for EDA and ML. [web:13]
 
@@ -629,7 +629,7 @@ print("np.argmax(a):", np.argmax(a))                                      # Inde
 print("np.argmin(a):", np.argmin(a))                                      # Index of the minimum element
 """0"""
 
-"""_____________________________________________________________________________________________<EXPONENTIALS, LOGS & TRIG FUNCTIONS>____________________________________________"""
+"""_________________________________________<EXPONENTIALS, LOGS & TRIG FUNCTIONS>_________________________________________"""
 
 # Exponential and Logarithmic Functions
 print("np.exp(a):", np.exp(a))                                # e^x
@@ -686,7 +686,7 @@ print("np.arccosh([1, 2, 3]):", np.arccosh([1, 2, 3]))
 print("np.arctanh([0, 0.5, 0.9]):", np.arctanh([0, 0.5, 0.9]))
 """[0.         0.54930614 1.47221949]"""                              # Calculated as (arctanh(x) = 0.5 * ln((1 + x) / (1 - x)))"""
 
-"""_____________________________________________________________________________________________<BROADCASTING>____________________________________________"""
+"""_____________________________________________________<BROADCASTING>____________________________________________________"""
 
 # Broadcasting lets NumPy apply operations on arrays of different shapes, by virtually
 # "stretching" smaller arrays along dimensions of size 1 or missing dimensions. [web:17][web:14]
@@ -756,7 +756,7 @@ d = np.array([[1, 2],
 # print("Broadcasting result of a + d:\n", result)
 ### Error: ValueError: operands could not be broadcast together with shapes (2,3) (3,2)
 
-"""____________________________________________<JOINING & SPLITTING ARRAYS>____________________________________________"""
+"""_____________________________________________<JOINING & SPLITTING ARRAYS>______________________________________________"""
 
 # Joining and splitting arrays are useful for building and breaking datasets or feature matrices. [web:7]
 
@@ -790,7 +790,7 @@ print("np.hsplit(np.array([[1,2,3],[4,5,6]]), 3):", np.hsplit(np.array([[1,2,3],
 print("np.vsplit(np.array([[1,2,3],[4,5,6]]), 2):", np.vsplit(np.array([[1,2,3],[4,5,6]]), 2))
 """[array([[1, 2, 3]]), array([[4, 5, 6]])]"""
 
-"""____________________________________________<MISCELLANEOUS NUMERICAL UTILITIES>____________________________________________"""
+"""__________________________________________<MISCELLANEOUS NUMERICAL UTILITIES>__________________________________________"""
 
 # Miscellaneous Functions (sign, clip, diff, gradient, integration)
 
@@ -811,7 +811,7 @@ x_axis = np.arange(1, 5)
 print("np.trapz(x_axis):", np.trapz(x_axis))                    # Trapezoidal integration
 """12.0"""                                                      # Calculated as (1+2)/2*1 + (2+3)/2*1 + (3+4)/2*1 + (4+5)/2*1 = 12.0
 
-"""____________________________________________<RANDOM NUMBER GENERATION>____________________________________________"""
+"""______________________________________________<RANDOM NUMBER GENERATION>_______________________________________________"""
 
 # Random Number Generation – useful for simulations, initializing weights, etc. [web:13]
 
@@ -883,7 +883,7 @@ print("np.random.random_sample((2, 3)):", np.random.random_sample((2, 3)))
 """[[0.093324 0.575946 0.929324]
  [0.318569 0.66741  0.131798]]"""
 
-"""____________________________________________<SET OPERATIONS>____________________________________________"""
+"""___________________________________________________<SET OPERATIONS>____________________________________________________"""
 
 # Set-like operations on 1D arrays are useful for categorical data, membership tests, etc.
 
@@ -909,7 +909,7 @@ print("np.in1d(arr1, arr2):", np.in1d(arr1, arr2))                   # Checks wh
 print("np.isin(arr1, arr2):", np.isin(arr1, arr2))                   # Similar to in1d but returns an array of the same shape as arr1
 """[False False  True  True  True]"""
 
-"""____________________________________________<STRING OPERATIONS>____________________________________________"""
+"""__________________________________________________<STRING OPERATIONS>__________________________________________________"""
 
 # NumPy string operations are mainly helpful when you have arrays of small strings
 # (e.g. labels) and want vectorized transformations. [web:13]
@@ -962,7 +962,7 @@ print("np.char.replace(['Hello World', 'Good Morning'], 'o', '0'):",
       np.char.replace(['Hello World', 'Good Morning'], 'o', '0'))
 """['Hell0 W0rld' 'G00d M0rning']"""
 
-"""____________________________________________<CONSTANTS & NAN-AWARE FUNCTIONS>____________________________________________"""
+"""___________________________________________<CONSTANTS & NAN-AWARE FUNCTIONS>___________________________________________"""
 
 # Constants and Special Values
 print("Value of np.pi:", np.pi)
